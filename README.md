@@ -2,7 +2,7 @@
 # Step 1
   * This will download the auto install script to your VPS.
 ```    
-wget -q https://github.com/CryptoCashBack/CryptoCashBack/releases/CryptoCashBack-Linux.tar.gz
+wget -q https://raw.githubusercontent.com/MotoAcidic/CCB_Sripts/master/CCB_install.sh
 
 ```
 # Step 2
