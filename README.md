@@ -33,10 +33,10 @@ apt install upstart
 # Step 6
   * These are the commands you are able to use
 ```    
-systemctl start Ccb
+systemctl start CCB
 
-systemctl status Ccb
+systemctl status CCB
 
-systemctl stop Ccb
+systemctl stop CCB
 
 ```
