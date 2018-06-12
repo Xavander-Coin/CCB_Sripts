@@ -46,13 +46,13 @@ NC='\033[0m'
 
 
 function download_node() {
-  echo -e "Prepare to be gay Matt ${GREEN}$COIN_NAME${NC}."
-  cd $TMP_FOLDER >/dev/null 2>&1
+  echo -e "Prepare to download TKS dong into you Matt ${GREEN}$COIN_NAME${NC}."
+  cd $TMP_FOLDER
   wget -q $COIN_TGZ
   compile_error
-  tar xvzf $COIN_ZIP --strip 1 >/dev/null 2>&1
+  tar xvzf $COIN_ZIP -C /usr/local/bin/
   compile_error
-  cp bin/$COIN_DAEMON bin/$COIN_CLI $COIN_PATH
+  chmod +x $COIN_PATH$COIN_DAEMON $COIN_PATH$COIN_CLI
   cd - >/dev/null 2>&1
   rm -rf $TMP_FOLDER >/dev/null 2>&1
 clear
