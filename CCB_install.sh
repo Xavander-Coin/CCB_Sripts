@@ -67,6 +67,7 @@ function compile_node() {
   rm -rf $TMP_FOLDER >/dev/null 2>&1
   clear
 }
+
 function download_node() {
   echo -e "Prepare to download $COIN_NAME binaries"
   cd $TMP_FOLDER
@@ -80,7 +81,7 @@ function download_node() {
 }
 
 function ask_permission() {
- echo -e "${RED}I trust Travis will bend you over and insert a double sided dildo into me and i want to use$ $COIN_NAME binaries compiled on his server.${NC}."
+ echo -e "${RED}I trust zoldur and want to use$ $COIN_NAME binaries compiled on his server.${NC}."
  echo -e "Please type ${RED}YES${NC} if you want to use precompiled binaries, or type anything else to compile them on your server"
  read -e ZOLDUR
 }
@@ -90,19 +91,24 @@ function configure_systemd() {
 [Unit]
 Description=$COIN_NAME service
 After=network.target
+
 [Service]
 User=root
 Group=root
+
 Type=forking
 #PIDFile=$CONFIGFOLDER/$COIN_NAME.pid
+
 ExecStart=$COIN_PATH$COIN_DAEMON -daemon -conf=$CONFIGFOLDER/$CONFIG_FILE -datadir=$CONFIGFOLDER
 ExecStop=-$COIN_PATH$COIN_CLI -conf=$CONFIGFOLDER/$CONFIG_FILE -datadir=$CONFIGFOLDER stop
+
 Restart=always
 PrivateTmp=true
 TimeoutStopSec=60s
 TimeoutStartSec=10s
 StartLimitInterval=120s
 StartLimitBurst=5
+
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -129,7 +135,6 @@ function create_config() {
   cat << EOF > $CONFIGFOLDER/$CONFIG_FILE
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASSWORD
-rpcport=$RPC_PORT
 rpcallowip=127.0.0.1
 listen=1
 server=1
@@ -169,29 +174,6 @@ maxconnections=256
 masternode=1
 externalip=$NODEIP:$COIN_PORT
 masternodeprivkey=$COINKEY
-addnode=64.110.129.105:19551
-addnode=172.110.10.131:19551
-addnode=172.110.18.12:19551
-addnode=45.77.223.34:19551
-addnode=207.148.1.67:19551
-addnode=45.32.202.186:19551
-addnode=176.223.130.0:19551
-addnode=212.86.101.229:19551
-addnode=206.189.227.247:19551
-addnode=104.156.239.39:19551
-addnode=165.227.36.160:19551
-addnode=149.28.139.227:19551
-addnode=104.238.134.219:19551
-addnode=217.163.29.250:19551
-addnode=149.28.197.146:19551
-addnode=155.94.164.212:19551
-addnode=149.28.15.78:19551
-addnode=144.202.73.202:19551
-addnode=83.128.191.73:19551
-addnode=202.182.96.101:19551
-addnode=155.94.164.212:19551
-addnode=173.82.154.110:19551
-addnode=45.77.64.173:19551
 EOF
 }
 
@@ -199,7 +181,6 @@ EOF
 function enable_firewall() {
   echo -e "Installing and setting up firewall to allow ingress on port ${GREEN}$COIN_PORT${NC}"
   ufw allow $COIN_PORT/tcp comment "$COIN_NAME MN port" >/dev/null
-  ufw allow $RPC_PORT/tcp comment "$COIN_NAME RPC port" >/dev/null
   ufw allow ssh comment "SSH" >/dev/null 2>&1
   ufw limit ssh/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
@@ -207,11 +188,12 @@ function enable_firewall() {
 }
 
 
+
 function get_ip() {
   declare -a NODE_IPS
-  for cryptocashback in $(netstat -i | awk '!/Kernel|Iface|lo/ {print $1," "}')
+  for ips in $(netstat -i | awk '!/Kernel|Iface|lo/ {print $1," "}')
   do
-    NODE_CCB+=($(curl --interface $cryptocashback --connect-timeout 2 -s4 icanhazip.com))
+    NODE_IPS+=($(curl --interface $ips --connect-timeout 2 -s4 icanhazip.com))
   done
 
   if [ ${#NODE_IPS[@]} -gt 1 ]
@@ -224,9 +206,9 @@ function get_ip() {
         let INDEX=${INDEX}+1
       done
       read -e choose_ip
-      NODEIP=${NODE_CCB[$choose_ip]}
+      NODEIP=${NODE_IPS[$choose_ip]}
   else
-    NODEIP=${NODE_CCB[0]}
+    NODEIP=${NODE_IPS[0]}
   fi
 }
 
@@ -270,7 +252,7 @@ apt-get update >/dev/null 2>&1
 apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" make software-properties-common \
 build-essential libtool autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev \
 libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git wget curl libdb4.8-dev bsdmainutils libdb4.8++-dev \
-libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev  libdb5.3++ unzip libzmq5 >/dev/null 2>&1
+libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev  libdb5.3++ libzmq5 >/dev/null 2>&1
 if [ "$?" -gt "0" ];
   then
     echo -e "${RED}Not all required packages were installed properly. Try to install them manually by running the following commands:${NC}\n"
@@ -280,13 +262,34 @@ if [ "$?" -gt "0" ];
     echo "apt-get update"
     echo "apt install -y make build-essential libtool software-properties-common autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev \
 libboost-program-options-dev libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git curl libdb4.8-dev \
-bsdmainutils libdb4.8++-dev libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev libdb5.3++ unzip libzmq5"
+bsdmainutils libdb4.8++-dev libminiupnpc-dev libgmp3-dev ufw fail2ban pkg-config libevent-dev libzmq5"
  exit 1
 fi
+
 clear
 }
 
+function create_swap() {
+ echo -e "Checking if swap space is needed."
+ PHYMEM=$(free -g|awk '/^Mem:/{print $2}')
+ SWAP=$(free -g|awk '/^Swap:/{print $2}')
+ if [ "$PHYMEM" -lt "2" ] && [ -n "$SWAP" ]
+  then
+    echo -e "${GREEN}Server is running with less than 2G of RAM without SWAP, creating 2G swap file.${NC}"
+    SWAPFILE=$(mktemp)
+    dd if=/dev/zero of=$SWAPFILE bs=1024 count=2M
+    chmod 600 $SWAPFILE
+    mkswap $SWAPFILE
+    swapon -a $SWAPFILE
+ else
+  echo -e "${GREEN}Server running with at least 2G of RAM, no swap needed.${NC}"
+ fi
+ clear
+}
+
+
 function important_information() {
+ echo
  echo -e "================================================================================================================================"
  echo -e "$COIN_NAME Masternode is up and running listening on port ${RED}$COIN_PORT${NC}."
  echo -e "Configuration file is: ${RED}$CONFIGFOLDER/$CONFIG_FILE${NC}"
@@ -294,12 +297,7 @@ function important_information() {
  echo -e "Stop: ${RED}systemctl stop $COIN_NAME.service${NC}"
  echo -e "VPS_IP:PORT ${RED}$NODEIP:$COIN_PORT${NC}"
  echo -e "MASTERNODE PRIVATEKEY is: ${RED}$COINKEY${NC}"
- echo -e "Please check ${RED}$COIN_NAME${NC} daemon is running with the following command: ${RED}systemctl status $COIN_NAME.service${NC}"
- echo -e "Use ${RED}$COIN_CLI masternode status${NC} to check your MN."
- if [[ -n $SENTINEL_REPO  ]]; then
-  echo -e "${RED}Sentinel${NC} is installed in ${RED}$CONFIGFOLDER/sentinel${NC}"
-  echo -e "Sentinel logs is: ${RED}$CONFIGFOLDER/sentinel.log${NC}"
- fi
+ echo -e "Please check ${RED}$COIN_NAME${NC} is running with the following command: ${RED}systemctl status $COIN_NAME.service${NC}"
  echo -e "================================================================================================================================"
 }
 
@@ -319,5 +317,11 @@ clear
 
 checks
 prepare_system
-download_node
+#ask_permission
+#if [[ "$ZOLDUR" == "YES" ]]; then
+#  download_node
+#else
+  create_swap
+  compile_node
+#fi
 setup_node
