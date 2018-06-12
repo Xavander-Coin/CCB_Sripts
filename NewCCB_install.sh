@@ -29,9 +29,9 @@ CONFIGFOLDER='/root/.cryptocashback'
 COIN_DAEMON='cryptocashbackd'
 COIN_CLI='cryptocashback-cli'
 COIN_PATH='/usr/local/bin/'
-COIN_BIN='https://github.com/CryptoCashBack/CryptoCashBack/releases/download/1.0/CryptoCashBack-Linux-binaries.tar.gz'
-COIN_TGZ='https://github.com/CryptoCashBack/CryptoCashBack/releases/download/1.0/CryptoCashBack-Linux.tar.gz'
-COIN_FIRSTZIP=$(echo $COIN_BIN | awk -F'/' '{print $NF}')
+
+COIN_TGZ=''
+
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_NAME='CryptoCashBack'
 COIN_PORT=19551
@@ -46,40 +46,42 @@ NC='\033[0m'
 
 
 function download_node() {
-  echo -e "Prepare to download ${GREEN}$COIN_NAME${NC}."
-  cd $TMP_FOLDER >/dev/null 2>&1
-  wget -q $COIN_BIN
-  compile_error
-  tar xvzf $COIN_FIRSTZIP --strip 1 >/dev/null 2>&1
+  echo -e "Prepare to download $COIN_NAME binaries"
+  cd $TMP_FOLDER
   wget -q $COIN_TGZ
+  tar xvzf $COIN_ZIP -C /usr/local/bin/
   compile_error
-  tar xvzf $COIN_ZIP --strip 1 >/dev/null 2>&1
-  compile_error
-  cp bin/$COIN_DAEMON bin/$COIN_CLI $COIN_PATH
+  chmod +x $COIN_PATH$COIN_DAEMON $COIN_PATH$COIN_CLI
   cd - >/dev/null 2>&1
-  rm -rf $TMP_FOLDER >/dev/null 2>&1
-clear
+  rm -r $TMP_FOLDER >/dev/null 2>&1
+  clear
 }
 
 
 function configure_systemd() {
-  cat << EOF > /etc/systemd/system/$COIN_NAME.service
+    cat << EOF > /etc/systemd/system/$COIN_NAME.service
+    
 [Unit]
 Description=$COIN_NAME service
 After=network.target
+
 [Service]
 User=root
 Group=root
+
 Type=forking
 #PIDFile=$CONFIGFOLDER/$COIN_NAME.pid
+
 ExecStart=$COIN_PATH$COIN_DAEMON -daemon -conf=$CONFIGFOLDER/$CONFIG_FILE -datadir=$CONFIGFOLDER
 ExecStop=-$COIN_PATH$COIN_CLI -conf=$CONFIGFOLDER/$CONFIG_FILE -datadir=$CONFIGFOLDER stop
+
 Restart=always
 PrivateTmp=true
 TimeoutStopSec=60s
 TimeoutStartSec=10s
 StartLimitInterval=120s
 StartLimitBurst=5
+
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -115,27 +117,21 @@ port=$COIN_PORT
 EOF
 }
 
-function create_key() {
-  echo -e "Enter your ${RED}$COIN_NAME Masternode Private Key${NC}. Leave it blank to generate a new ${RED}Masternode Private Key${NC} for you:"
-  read -e COINKEY
-  if [[ -z "$COINKEY" ]]; then
-  $COIN_PATH$COIN_DAEMON -daemon
-  sleep 30
-  if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
-   echo -e "${RED}$COIN_NAME server couldn not start. Check /var/log/syslog for errors.{$NC}"
-   exit 1
-  fi
-  COINKEY=$($COIN_PATH$COIN_CLI masternode genkey)
-  if [ "$?" -gt "0" ];
-    then
-    echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
-    sleep 30
-    COINKEY=$($COIN_PATH$COIN_CLI masternode genkey)
-  fi
-  $COIN_PATH$COIN_CLI stop
-fi
-clear
+function create_config() {
+  mkdir $CONFIGFOLDER >/dev/null 2>&1
+  RPCUSER=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w10 | head -n1)
+  RPCPASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w22 | head -n1)
+  cat << EOF > $CONFIGFOLDER/$CONFIG_FILE
+rpcuser=$RPCUSER
+rpcpassword=$RPCPASSWORD
+rpcallowip=127.0.0.1
+listen=1
+server=1
+daemon=1
+port=$COIN_PORT
+EOF
 }
+
 
 function update_config() {
   sed -i 's/daemon=1/daemon=0/' $CONFIGFOLDER/$CONFIG_FILE
