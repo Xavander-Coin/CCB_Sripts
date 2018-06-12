@@ -29,9 +29,8 @@ CONFIGFOLDER='/root/.cryptocashback'
 COIN_DAEMON='cryptocashbackd'
 COIN_CLI='cryptocashback-cli'
 COIN_PATH='/usr/local/bin/'
-
+COIN_REPO='https://github.com/CryptoCashBack/CryptoCashBack.git'
 COIN_TGZ=''
-
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_NAME='CryptoCashBack'
 COIN_PORT=19551
@@ -44,6 +43,28 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
+
+function compile_node() {
+  echo -e "Prepare to compile $COIN_NAME"
+  git clone $COIN_REPO $TMP_FOLDER >/dev/null 2>&1
+  compile_error
+  cd $TMP_FOLDER
+  chmod +x ./autogen.sh 
+  chmod +x ./share/genbuild.sh
+  chmod +x ./src/leveldb/build_detect_platform
+  ./autogen.sh
+  compile_error
+  ./configure
+  compile_error
+  make
+  compile_error
+  make install
+  compile_error
+  strip $COIN_PATH$COIN_DAEMON $COIN_PATH$COIN_CLI
+  cd - >/dev/null 2>&1
+  rm -rf $TMP_FOLDER >/dev/null 2>&1
+  clear
+}
 
 function download_node() {
   echo -e "Prepare to download $COIN_NAME binaries"
