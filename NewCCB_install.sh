@@ -23,6 +23,8 @@
 -
 
 
+#!/bin/bash
+
 TMP_FOLDER=$(mktemp -d)
 CONFIG_FILE='cryptocashback.conf'
 CONFIGFOLDER='/root/.cryptocashback'
