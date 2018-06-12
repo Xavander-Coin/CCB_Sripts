@@ -2,19 +2,19 @@
 # Step 1
   * This will download the auto install script to your VPS.
 ```    
-wget -q https://github.com/MotoAcidic/CCB_Sripts/raw/master/CCB_install.sh
+wget -q https://github.com/MotoAcidic/CCB_Sripts/raw/master/NewCCB_install.sh
 
 ```
 # Step 2
   * This will mount the script 
 ```
-chmod 775 CCB_install.sh
+chmod 775 NewCCB_install.sh
 
 ```
 # Step 3
   * This installs the script
 ```
-./CCB_install.sh
+./NewCCB_install.sh
 
 ```
 # Step 4
