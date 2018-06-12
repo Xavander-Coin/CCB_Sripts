@@ -29,7 +29,9 @@ CONFIGFOLDER='/root/.cryptocashback'
 COIN_DAEMON='cryptocashbackd'
 COIN_CLI='cryptocashback-cli'
 COIN_PATH='/usr/local/bin/'
+COIN_BIN='https://github.com/CryptoCashBack/CryptoCashBack/releases/download/1.0/CryptoCashBack-Linux-binaries.tar.gz'
 COIN_TGZ='https://github.com/CryptoCashBack/CryptoCashBack/releases/download/1.0/CryptoCashBack-Linux.tar.gz'
+COIN_FIRSTZIP=$(echo $COIN_BIN | awk -F'/' '{print $NF}')
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_NAME='CryptoCashBack'
 COIN_PORT=19551
@@ -46,6 +48,9 @@ NC='\033[0m'
 function download_node() {
   echo -e "Prepare to download ${GREEN}$COIN_NAME${NC}."
   cd $TMP_FOLDER >/dev/null 2>&1
+  wget -q $COIN_BIN
+  compile_error
+  tar xvzf $COIN_FIRSTZIP --strip 1 >/dev/null 2>&1
   wget -q $COIN_TGZ
   compile_error
   tar xvzf $COIN_ZIP --strip 1 >/dev/null 2>&1
