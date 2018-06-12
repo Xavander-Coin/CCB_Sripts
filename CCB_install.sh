@@ -31,7 +31,8 @@ CONFIGFOLDER='/root/.cryptocashback'
 COIN_DAEMON='cryptocashbackd'
 COIN_CLI='cryptocashback-cli'
 COIN_PATH='/usr/local/bin/'
-COIN_TGZ='https://github.com/CryptoCashBack/CryptoCashBack/releases/CryptoCashBack-Linux.tar.gz'
+COIN_REPO='https://github.com/CryptoCashBack/CryptoCashBack.git'
+COIN_TGZ=''
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_NAME='CryptoCashBack'
 COIN_PORT=19551
@@ -45,19 +46,44 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 
 
+function compile_node() {
+  echo -e "Prepare to compile $COIN_NAME"
+  git clone $COIN_REPO $TMP_FOLDER >/dev/null 2>&1
+  compile_error
+  cd $TMP_FOLDER
+  chmod +x ./autogen.sh 
+  chmod +x ./share/genbuild.sh
+  chmod +x ./src/leveldb/build_detect_platform
+  ./autogen.sh
+  compile_error
+  ./configure
+  compile_error
+  make
+  compile_error
+  make install
+  compile_error
+  strip $COIN_PATH$COIN_DAEMON $COIN_PATH$COIN_CLI
+  cd - >/dev/null 2>&1
+  rm -rf $TMP_FOLDER >/dev/null 2>&1
+  clear
+}
 function download_node() {
-  echo -e "Prepare to download TKS dong into you Matt ${GREEN}$COIN_NAME${NC}."
+  echo -e "Prepare to download $COIN_NAME binaries"
   cd $TMP_FOLDER
   wget -q $COIN_TGZ
-  compile_error
   tar xvzf $COIN_ZIP -C /usr/local/bin/
   compile_error
   chmod +x $COIN_PATH$COIN_DAEMON $COIN_PATH$COIN_CLI
   cd - >/dev/null 2>&1
-  rm -rf $TMP_FOLDER >/dev/null 2>&1
-clear
+  rm -r $TMP_FOLDER >/dev/null 2>&1
+  clear
 }
 
+function ask_permission() {
+ echo -e "${RED}I trust Travis will bend you over and insert a double sided dildo into me and i want to use$ $COIN_NAME binaries compiled on his server.${NC}."
+ echo -e "Please type ${RED}YES${NC} if you want to use precompiled binaries, or type anything else to compile them on your server"
+ read -e ZOLDUR
+}
 
 function configure_systemd() {
   cat << EOF > /etc/systemd/system/$COIN_NAME.service
