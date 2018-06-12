@@ -1,30 +1,5 @@
 #!/bin/bash
 
--cd ~
--echo "****************************************************************************"
--echo "****************************************************************************"
--echo "*****************************IPSUM Community Script*************************"
--echo "****************************************************************************"
--echo "****************************************************************************"
--echo "********************This script was forked from XeZZoR**********************"
--echo "****************************************************************************"
--echo "* Ubuntu 16.04 is the recommended opearting system for this install.       *"
--echo "*                                                                          *"
--echo "* This script will install and configure your IPSUM Coin Masternode.       *"
--echo "****************************************************************************"
--echo && echo && echo
--echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
--echo "!                                                 !"
--echo "! Make sure you double check before hitting enter !"
--echo "! This will install version 3.1.0                 !"
--echo "!                                                 !"
--echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
--echo && echo && echo
--
-
-
-#!/bin/bash
-
 TMP_FOLDER=$(mktemp -d)
 CONFIG_FILE='cryptocashback.conf'
 CONFIGFOLDER='/root/.cryptocashback'
