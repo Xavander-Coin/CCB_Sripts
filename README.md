@@ -8,13 +8,13 @@ wget -q https://github.com/MotoAcidic/CCB_Sripts/raw/master/CCB_install.sh
 # Step 2
   * This will mount the script 
 ```
-chmod +x CCB_install.sh
+chmod 775 CCB_install.sh
 
 ```
 # Step 3
   * This installs the script
 ```
-./CCB_install.sh install
+./CCB_install.sh
 
 ```
 # Step 4
