@@ -33,10 +33,10 @@ apt install upstart
 # Step 6
   * These are the commands you are able to use
 ```    
-systemctl start CCB
+systemctl start CryptoCashBack.service
 
-systemctl status CCB
+systemctl status CryptoCashBack.service
 
-systemctl stop CCB
+systemctl stop CryptoCashBack.service
 
 ```
