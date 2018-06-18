@@ -18,19 +18,22 @@ chmod 775 CCB_install.sh
 
 ```
 # Step 4
+  * Enter you masternode genkey when promt.
+
+# Step 5
   * Watch the block number until it gets to the current block height
 ```
 watch cryptocashback-cli getinfo
 
 ```
 
-# Step 5
+# Step 6
   * Install upstart so you can use systemctl commands
 ```    
 apt install upstart
 
 ```
-# Step 6
+# Step 7
   * These are the commands you are able to use
 ```    
 systemctl start CryptoCashBack.service
