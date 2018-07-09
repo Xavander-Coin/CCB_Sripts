@@ -2,7 +2,6 @@
 
 TMP_FOLDER=$(mktemp -d)
 CONFIG_FILE='cryptocashback.conf'
-//CONFIGFOLDER='/ccb/.cryptocashback'
 CONFIGFOLDER='/ccb/.cryptocashback'
 COIN_DAEMON='cryptocashbackd'
 COIN_CLI='cryptocashback-cli'
