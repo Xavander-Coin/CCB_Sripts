@@ -6,13 +6,20 @@ CONFIG_FILE='cryptocashback.conf'
 CONFIGFOLDER='/ccb/.cryptocashback'
 COIN_DAEMON='cryptocashbackd'
 COIN_CLI='cryptocashback-cli'
+
 COIN_PATH='/ccb/'
 COIN_REPO='https://github.com/CryptoCashBack/CryptoCashBack.git'
+
+COIN_PATH='/usr/local/bin/'
+COIN_REPO='https://github.com/CryptoCashBack-Hub/CCB.git'
+
 COIN_TGZ=''
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_NAME='CryptoCashBack'
 COIN_PORT=19551
 RPC_PORT=19552
+SSH_CONFIG="/etc/ssh/sshd_config"
+SSH_PORT=`grep Port $SSH_CONFIG | cut -d " " -f 2`
 
 NODEIP=$(curl -s4 icanhazip.com)
 
@@ -116,6 +123,29 @@ listen=1
 server=1
 daemon=1
 port=$COIN_PORT
+addnode=64.110.129.105:19551
+addnode=172.110.10.131:19551
+addnode=172.110.18.12:19551
+addnode=45.77.223.34:19551
+addnode=207.148.1.67:19551
+addnode=45.32.202.186:19551
+addnode=176.223.130.0:19551
+addnode=212.86.101.229:19551
+addnode=206.189.227.247:19551
+addnode=104.156.239.39:19551
+addnode=165.227.36.160:19551
+addnode=149.28.139.227:19551
+addnode=104.238.134.219:19551
+addnode=217.163.29.250:19551
+addnode=149.28.197.146:19551
+addnode=155.94.164.212:19551
+addnode=149.28.15.78:19551
+addnode=144.202.73.202:19551
+addnode=83.128.191.73:19551
+addnode=202.182.96.101:19551
+addnode=155.94.164.212:19551
+addnode=173.82.154.110:19551
+addnode=45.77.64.173:19551
 EOF
 }
 
@@ -157,8 +187,8 @@ EOF
 function enable_firewall() {
   echo -e "Installing and setting up firewall to allow ingress on port ${GREEN}$COIN_PORT${NC}"
   ufw allow $COIN_PORT/tcp comment "$COIN_NAME MN port" >/dev/null
-  ufw allow ssh comment "SSH" >/dev/null 2>&1
-  ufw limit ssh/tcp >/dev/null 2>&1
+  ufw allow $SSH_PORT comment "SSH" >/dev/null 2>&1
+  ufw limit $SSH_PORT/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
 }
