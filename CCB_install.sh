@@ -2,10 +2,10 @@
 
 TMP_FOLDER=$(mktemp -d)
 CONFIG_FILE='cryptocashback.conf'
-CONFIGFOLDER='/ccb/.cryptocashback'
+CONFIGFOLDER='/root/.cryptocashback'
 COIN_DAEMON='cryptocashbackd'
 COIN_CLI='cryptocashback-cli'
-COIN_PATH='/ccb/'
+COIN_PATH='/usr/local/bin/'
 COIN_REPO='https://github.com/CryptoCashBack-Hub/CCB.git'
 COIN_TGZ=''
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
