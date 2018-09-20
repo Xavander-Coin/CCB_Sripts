@@ -3,16 +3,16 @@
 HEIGHT=15
 WIDTH=40
 CHOICE_HEIGHT=6
-BACKTITLE="CCB Masternode Setup Wizard"
-TITLE="CCB VPS Setup"
+BACKTITLE="CCBC Masternode Setup Wizard"
+TITLE="CCBC VPS Setup"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Install New VPS Server"
          2 "Update to new version VPS Server"
-         3 "Start CCB Masternode"
-	 4 "Stop CCB Masternode"
-	 5 "CCB Server Status"
-	 6 "Rebuild CCB Masternode Index")
+         3 "Start CCBC Masternode"
+	 4 "Stop CCBC Masternode"
+	 5 "CCBC Server Status"
+	 6 "Rebuild CCBC Masternode Index")
 
 
 CHOICE=$(whiptail --clear\
@@ -71,7 +71,7 @@ echo VPS Server prerequisites installed.
 
 echo Configuring server firewall.
 sudo apt-get install -y ufw
-sudo ufw allow 19551
+sudo ufw allow 5520 
 sudo ufw allow ssh/tcp
 sudo ufw limit ssh/tcp
 sudo ufw logging on
@@ -80,28 +80,28 @@ sudo ufw status
 echo Server firewall configuration completed.
 
 echo Downloading AquilaX install files.
-wget https://github.com/CryptoCashBack-Hub/CCB/releases/download/V1.0.0.0/CCB-linux.tar.gz
+wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.1/CCBC-linux.tar.gz
 echo Download complete.
 
-echo Installing CCB.
-tar -xvf CCB-linux.tar.gz
-chmod 775 ./cryptocashbackd
-chmod 775 ./cryptocashback-cli
-echo cryptocashback install complete. 
-sudo rm -rf CCB-linux.tar.gz
+echo Installing CCBC.
+tar -xvf CCBC-linux.tar.gz
+chmod 775 ./ccbcd
+chmod 775 ./ccbc-cli
+echo Concierge install complete. 
+sudo rm -rf CCBC-linux.tar.gz
 clear
 
-echo Now ready to setup AquilaX configuration file.
+echo Now ready to setup CCBC configuration file.
 
 RPCUSER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 RPCPASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-VPSIP=$(curl -s4 icanhazip.com)
+EXTIP=`curl -s4 icanhazip.com`
 echo Please input your private key.
 read GENKEY
 
-mkdir -p /root/.cryptocashback && touch /root/.cryptocashback/cryptocashback.conf
+mkdir -p /root/.ccbc && touch /root/.ccbc/ccbc.conf
 
-cat << EOF > /root/.cryptocashback/cryptocashback.conf
+cat << EOF > /root/.ccbc/ccbc.conf
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASSWORD
 rpcallowip=127.0.0.1
@@ -110,58 +110,34 @@ listen=1
 daemon=1
 staking=1
 rpcallowip=127.0.0.1
-rpcport=19552
-port=19551
+rpcport=15520
+port=5520
 logtimestamps=1
 maxconnections=256
 masternode=1
-externalip=$VPSIP
+externalip=$EXTIP
 masternodeprivkey=$GENKEY
-addnode=64.110.129.105:19551
-addnode=172.110.10.131:19551
-addnode=172.110.18.12:19551
-addnode=45.77.223.34:19551
-addnode=207.148.1.67:19551
-addnode=45.32.202.186:19551
-addnode=176.223.130.0:19551
-addnode=212.86.101.229:19551
-addnode=206.189.227.247:19551
-addnode=104.156.239.39:19551
-addnode=165.227.36.160:19551
-addnode=149.28.139.227:19551
-addnode=104.238.134.219:19551
-addnode=217.163.29.250:19551
-addnode=149.28.197.146:19551
-addnode=155.94.164.212:19551
-addnode=149.28.15.78:19551
-addnode=144.202.73.202:19551
-addnode=83.128.191.73:19551
-addnode=202.182.96.101:19551
-addnode=155.94.164.212:19551
-addnode=173.82.154.110:19551
-addnode=45.77.64.173:19551
-
 EOF
 clear
-./cryptocashbackd -daemon
-./cryptocashback-cli stop
-./cryptocashbackd -daemon
+./ccbcd -daemon
+./ccbc-cli stop
+./ccbcd -daemon
 clear
-echo cryptocashback configuration file created successfully. 
-echo cryptocashback Server Started Successfully using the command ./Aquilad -daemon
-echo If you get a message asking to rebuild the database, please hit Ctr + C and run ./cryptocashbackd -daemon -reindex
+echo CCBC configuration file created successfully. 
+echo CCBC Server Started Successfully using the command ./ccbcd -daemon
+echo If you get a message asking to rebuild the database, please hit Ctr + C and run ./ccbcd -daemon -reindex
 echo If you still have further issues please reach out to support in our Discord channel. 
 echo Please use the following Private Key when setting up your wallet: $GENKEY
             ;;
 	    
     
         2)
-sudo ./cryptocashback-cli -daemon stop
-echo "! Stopping CCB Daemon !"
+sudo ./ccbc-cli -daemon stop
+echo "! Stopping CCBC Daemon !"
 
 echo Configuring server firewall.
 sudo apt-get install -y ufw
-sudo ufw allow 19551
+sudo ufw allow 5520
 sudo ufw allow ssh/tcp
 sudo ufw limit ssh/tcp
 sudo ufw logging on
@@ -169,35 +145,33 @@ echo "y" | sudo ufw enable
 sudo ufw status
 echo Server firewall configuration completed.
 
-echo "! Removing CCB !"
-sudo rm -rf CCB_install.sh
-sudo rm -rf cryptocashbackd
-sudo rm -rf cryptocashback-cli
-sudo rm -rf cryptocashback-qt
+echo "! Removing Concierge !"
+sudo rm -rf CCBC-linux.tar.gz
 
 
-
-wget https://github.com/CryptoCashBack-Hub/CCB/releases/download/V1.0.0.0/CCB-linux.tar.gz
+wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.1/CCBC-linux.tar.gz
 echo Download complete.
-echo Installing CCB.
-tar -xvf CCB-linux.tar.gz
-chmod 775 ./cryptocashbackd
-chmod 775 ./cryptocashback-cli
-echo AquilaX install complete. 
-sudo rm -rf CCB-linux.tar.gz
+echo Installing CCBC.
+tar -xvf CCBC-linux.tar.gz
+chmod 775 ./ccbcd
+chmod 775 ./ccbc-cli
+sudo rm -rf CCBC-linux.tar.gz
+./ccbcd -daemon
+echo CCBC install complete. 
+
 
             ;;
         3)
-            ./cryptocashbackd -daemon
-		echo "If you get a message asking to rebuild the database, please hit Ctr + C and rebuild Aquila Index. (Option 6)"
+            ./ccbcd -daemon
+		echo "If you get a message asking to rebuild the database, please hit Ctr + C and rebuild CCBC Index. (Option 6)"
             ;;
 	4)
-            ./cryptocashback-cli stop
+            ./ccbc-cli stop
             ;;
 	5)
-	    ./cryptocashback-cli getinfo
+	    ./ccbc-cli getinfo
 	    ;;
         6)
-	     ./cryptocashbackd -daemon -reindex
+	     ./ccbcd -daemon -reindex
             ;;
 esac
