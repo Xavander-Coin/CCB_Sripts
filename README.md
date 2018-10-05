@@ -1,6 +1,6 @@
 ![logo](https://github.com/CryptoCashBack-Hub/CCBC/blob/master/src/qt/res/images/ccbc_logo_horizontal.png)
 
-# CCBC v1.0.0.2 Masternode Setup Guide [ Ubuntu 16.04 ]
+# CCBC v1.0.0.3 Masternode Setup Guide [ Ubuntu 16.04 ]
 
 THIS GUIDE IS FOR ROOT USERS -
 
