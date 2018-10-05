@@ -80,7 +80,7 @@ sudo ufw status
 echo Server firewall configuration completed.
 
 echo Downloading AquilaX install files.
-wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.2/CCBC-linux.tar.gz
+wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.3/CCBC-linux.tar.gz
 echo Download complete.
 
 echo Installing CCBC.
@@ -119,6 +119,7 @@ addnode=95.179.199.170:5520
 addnode=158.69.143.106:5520
 addnode=95.216.145.35:5520
 addnode=45.32.123.247:5520
+addnode=seeder.ccbcoin.club
 logtimestamps=1
 maxconnections=256
 masternode=1
@@ -156,7 +157,7 @@ echo "! Removing Concierge !"
 sudo rm -rf CCBC-linux.tar.gz
 
 
-wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.2/CCBC-linux.tar.gz
+wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.3/CCBC-linux.tar.gz
 echo Download complete.
 echo Installing CCBC.
 tar -xvf CCBC-linux.tar.gz
