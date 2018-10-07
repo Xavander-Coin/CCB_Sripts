@@ -1,6 +1,6 @@
 ![logo](https://github.com/CryptoCashBack-Hub/CCBC/blob/master/src/qt/res/images/ccbc_logo_horizontal.png)
 
-# CCBC v1.0.0.3 Masternode Setup Guide [ Ubuntu 16.04 ]
+# CCBC v1.0.0.4 Masternode Setup Guide [ Ubuntu 16.04 ]
 
 THIS GUIDE IS FOR ROOT USERS -
 
@@ -17,7 +17,7 @@ Shell script to install a CCBC Masternode on a Linux server running Ubuntu 16.04
 
 
 Steps generate your own private key. 
-1.  Download and install CCBC v1.0.0.3 for Windows -   Download Link  - https://github.com/CryptoCashBack-Hub/CCBC/releases
+1.  Download and install CCBC v1.0.0.4 for Windows -   Download Link  - https://github.com/CryptoCashBack-Hub/CCBC/releases
 2.  Go to **Tools -> Click "Debug Console"** 
 3.  Type the following command: **masternode genkey**  
 4. You now have your generated **Private Key**  (MasternodePrivKey)
@@ -73,7 +73,7 @@ After the MN is up and running, you need to configure the desktop wallet accordi
 1. Open the CCBC Desktop Wallet.  
 2. Go to RECEIVE and create a New Address: **MN1**  
 3. Send **25000** CCBC to **MN1**. You need to send 25000 coins in one single transaction.
-4. Wait for 15 confirmations.  
+4. Wait for 10 confirmations.  
 5. Go to **Tools -> Click "Debug Console"** 
 6. Type the following command: **masternode outputs**  
 7. Go to  **Tools -> "Open Masternode Configuration File"**
