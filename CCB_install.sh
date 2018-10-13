@@ -79,7 +79,7 @@ echo "y" | sudo ufw enable
 sudo ufw status
 echo Server firewall configuration completed.
 
-echo Downloading AquilaX install files.
+echo Downloading CCBC install files.
 wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.4/CCBC-linux.tar.gz
 echo Download complete.
 
@@ -87,7 +87,7 @@ echo Installing CCBC.
 tar -xvf CCBC-linux.tar.gz
 chmod 775 ./ccbcd
 chmod 775 ./ccbc-cli
-echo Concierge install complete. 
+echo CCBC install complete. 
 sudo rm -rf CCBC-linux.tar.gz
 clear
 
