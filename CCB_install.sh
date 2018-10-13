@@ -112,6 +112,7 @@ staking=1
 rpcallowip=127.0.0.1
 rpcport=15520
 port=5520
+prune=500
 addnode=144.202.16.251:5520
 addnode=104.238.159.161:5520
 addnode=178.128.116.146:5520
