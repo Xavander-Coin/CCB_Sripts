@@ -3,16 +3,16 @@
 HEIGHT=15
 WIDTH=40
 CHOICE_HEIGHT=6
-BACKTITLE="CCBC Masternode Setup Wizard"
-TITLE="CCBC VPS Setup"
+BACKTITLE="XCZM Masternode Setup Wizard"
+TITLE="XCZM VPS Setup"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Install New VPS Server"
          2 "Update to new version VPS Server"
-         3 "Start CCBC Masternode"
-	 4 "Stop CCBC Masternode"
-	 5 "CCBC Server Status"
-	 6 "Rebuild CCBC Masternode Index")
+         3 "Start XCZM Masternode"
+	 4 "Stop XCZM Masternode"
+	 5 "XCZM Server Status"
+	 6 "Rebuild XCZM Masternode Index")
 
 
 CHOICE=$(whiptail --clear\
@@ -71,7 +71,7 @@ echo VPS Server prerequisites installed.
 
 echo Configuring server firewall.
 sudo apt-get install -y ufw
-sudo ufw allow 5520 
+sudo ufw allow 35550 
 sudo ufw allow ssh/tcp
 sudo ufw limit ssh/tcp
 sudo ufw logging on
@@ -79,19 +79,19 @@ echo "y" | sudo ufw enable
 sudo ufw status
 echo Server firewall configuration completed.
 
-echo Downloading CCBC install files.
-wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.5/CCBC-linux.tar.gz
+echo Downloading XCZM install files.
+wget https://github.com/Xavander-Coin/Xavander-Core/releases/download/v1.0.0.1/Xavander-Linux.tar.gz
 echo Download complete.
 
-echo Installing CCBC.
-tar -xvf CCBC-linux.tar.gz
-chmod 775 ./ccbcd
-chmod 775 ./ccbc-cli
-echo CCBC install complete. 
-sudo rm -rf CCBC-linux.tar.gz
+echo Installing XCZM.
+tar -xvf Xavander-Linux.tar.gz
+chmod 775 ./xavanderd
+chmod 775 ./xavander-cli
+echo XCZM install complete. 
+sudo rm -rf Xavander-Linux.tar.gz
 clear
 
-echo Now ready to setup CCBC configuration file.
+echo Now ready to setup XCZM configuration file.
 
 RPCUSER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 RPCPASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
@@ -99,9 +99,9 @@ EXTIP=`curl -s4 icanhazip.com`
 echo Please input your private key.
 read GENKEY
 
-mkdir -p /root/.ccbc && touch /root/.ccbc/ccbc.conf
+mkdir -p /root/.xavander && touch /root/.xavander/xavander.conf
 
-cat << EOF > /root/.ccbc/ccbc.conf
+cat << EOF > /root/.xavander/xavander.conf
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASSWORD
 rpcallowip=127.0.0.1
@@ -110,17 +110,16 @@ listen=1
 daemon=1
 staking=1
 rpcallowip=127.0.0.1
-rpcport=5521
-port=5520
+rpcport=35551
+port=35550
 prune=500
-addnode=144.202.16.251:5520
-addnode=104.238.159.161:5520
-addnode=178.128.116.146:5520
-addnode=95.179.199.170:5520
-addnode=158.69.143.106:5520
-addnode=95.216.145.35:5520
-addnode=45.32.123.247:5520
-addnode=seeder.ccbcoin.club
+addnode=149.28.56.206:35550
+addnode=149.28.230.40:35550
+addnode=140.82.44.86:35550
+addnode=149.28.235.176:35550
+addnode=108.61.89.24:35550
+addnode=23.94.68.28:35550
+addnode=198.12.95.45:35550
 logtimestamps=1
 maxconnections=256
 masternode=1
@@ -128,25 +127,25 @@ externalip=$EXTIP
 masternodeprivkey=$GENKEY
 EOF
 clear
-./ccbcd -daemon
-./ccbc-cli stop
-./ccbcd -daemon
+./xavanderd -daemon
+./xavander-cli stop
+./xavanderd -daemon
 clear
-echo CCBC configuration file created successfully. 
-echo CCBC Server Started Successfully using the command ./ccbcd -daemon
-echo If you get a message asking to rebuild the database, please hit Ctr + C and run ./ccbcd -daemon -reindex
+echo XCZM configuration file created successfully. 
+echo XCZM Server Started Successfully using the command ./xavanderd -daemon
+echo If you get a message asking to rebuild the database, please hit Ctr + C and run ./xavanderd -daemon -reindex
 echo If you still have further issues please reach out to support in our Discord channel. 
 echo Please use the following Private Key when setting up your wallet: $GENKEY
             ;;
 	    
     
         2)
-sudo ./ccbc-cli -daemon stop
-echo "! Stopping CCBC Daemon !"
+sudo ./xavander-cli -daemon stop
+echo "! Stopping XCZM Daemon !"
 
 echo Configuring server firewall.
 sudo apt-get install -y ufw
-sudo ufw allow 5520
+sudo ufw allow 35550
 sudo ufw allow ssh/tcp
 sudo ufw limit ssh/tcp
 sudo ufw logging on
@@ -154,33 +153,33 @@ echo "y" | sudo ufw enable
 sudo ufw status
 echo Server firewall configuration completed.
 
-echo "! Removing Concierge !"
-sudo rm -rf CCBC-linux.tar.gz
+echo "! Removing Xavander !"
+sudo rm -rf Xavander-Linux.tar.gz
 
 
-wget https://github.com/CryptoCashBack-Hub/CCBC/releases/download/v1.0.0.5/CCBC-linux.tar.gz
+wget https://github.com/Xavander-Coin/Xavander-Core/releases/download/v1.0.0.1/Xavander-Linux.tar.gz
 echo Download complete.
-echo Installing CCBC.
-tar -xvf CCBC-linux.tar.gz
-chmod 775 ./ccbcd
-chmod 775 ./ccbc-cli
-sudo rm -rf CCBC-linux.tar.gz
-./ccbcd -daemon
-echo CCBC install complete. 
+echo Installing XCZM.
+tar -xvf Xavander-Linux.tar.gz
+chmod 775 ./xavanderd
+chmod 775 ./xavander-cli
+sudo rm -rf Xavander-Linux.tar.gz
+./xavanderd -daemon
+echo XCZM install complete. 
 
 
             ;;
         3)
-            ./ccbcd -daemon
-		echo "If you get a message asking to rebuild the database, please hit Ctr + C and rebuild CCBC Index. (Option 6)"
+            ./xavanderd -daemon
+		echo "If you get a message asking to rebuild the database, please hit Ctr + C and rebuild XCZM Index. (Option 6)"
             ;;
 	4)
-            ./ccbc-cli stop
+            ./xavander-cli stop
             ;;
 	5)
-	    ./ccbc-cli getinfo
+	    ./xavander-cli getinfo
 	    ;;
         6)
-	     ./ccbcd -daemon -reindex
+	     ./xavanderd -daemon -reindex
             ;;
 esac
