@@ -1,6 +1,6 @@
-![logo](https://github.com/CryptoCashBack-Hub/CCBC/blob/master/src/qt/res/images/ccbc_logo_horizontal.png)
+![logo](https://github.com/Xavander-Coin/Xavander-Core/blob/master/src/qt/res/images/xavander_logo_horizontal.png)
 
-# CCBC v1.0.0.5 Masternode Setup Guide [ Ubuntu 16.04 ]
+# Xavander v1.0.0.1 Masternode Setup Guide [ Ubuntu 16.04 ]
 
 THIS GUIDE IS FOR ROOT USERS -
 
@@ -10,14 +10,14 @@ User=root
 Group=root
 ```
 
-Shell script to install a CCBC Masternode on a Linux server running Ubuntu 16.04. Use it on your own risk.
+Shell script to install a Xavander Masternode on a Linux server running Ubuntu 16.04. Use it on your own risk.
 ***
 
 ## Private Key
 
 
 Steps generate your own private key. 
-1.  Download and install CCBC v1.0.0.5 for Windows -   Download Link  - https://github.com/CryptoCashBack-Hub/CCBC/releases
+1.  Download and install XCZM v1.0.0.1 for Windows -   Download Link  - https://github.com/Xavander-Coin/Xavander-Core/releases
 2.  Go to **Tools -> Click "Debug Console"** 
 3.  Type the following command: **masternode genkey**  
 4. You now have your generated **Private Key**  (MasternodePrivKey)
@@ -34,10 +34,10 @@ cd &&  bash -c "$(wget -O - https://raw.githubusercontent.com/CryptoCashBack-Hub
 You will have 6 options once you run the command above.
 1. This option Will install a fresh MNN VPS instance
 2. This option will update your MN wallet on the vps if a network or wallet update is needed.
-3. This option will Start CCBC Masternode
-4. This option will Stop CCBC Masternode
-5. This option will show CCBC Server Status
-6. This option will Rebuild CCBC Masternode Index
+3. This option will Start XCZM Masternode
+4. This option will Stop XCZM Masternode
+5. This option will show XCZM Server Status
+6. This option will Rebuild XCZM Masternode Index
 
 
 If you need to go back and either start or stop Concierge just use this command.
@@ -52,10 +52,10 @@ Once the VPS installation is finished.
 Check the block height
 
 ```
-watch ./ccbc-cli getinfo
+watch ./xavander-cli getinfo
 ```
 
-We want the blocks to match whats on the CCBC block explorer
+We want the blocks to match whats on the XCZM block explorer
 
 Once they match you can proceed with the rest of the guide.
 
@@ -70,9 +70,9 @@ CTRL and C  at the same time  (CTRL KEY and C KEY)
 ## Desktop wallet setup  
 
 After the MN is up and running, you need to configure the desktop wallet accordingly. Here are the steps:  
-1. Open the CCBC Desktop Wallet.  
+1. Open the XCZM Desktop Wallet.  
 2. Go to RECEIVE and create a New Address: **MN1**  
-3. Send **25000** CCBC to **MN1**. You need to send 25000 coins in one single transaction.
+3. Send **10000** XCZM to **MN1**. You need to send 10000 coins in one single transaction.
 4. Wait for 10 confirmations.  
 5. Go to **Tools -> Click "Debug Console"** 
 6. Type the following command: **masternode outputs**  
@@ -84,7 +84,7 @@ Alias Address Privkey TxHash TxIndex
 ## SAMPLE OF HOW YOUR MASTERNODE.CONF SHOULD LOOK LIKE.  (This should all be on one line)  
 
 ```
-MN1 127.0.0.2:5520 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c0
+MN1 127.0.0.2:35550 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c0
 ```
 
 
@@ -107,7 +107,7 @@ startmasternode alias 0 MN1
 14. Login to your VPS and check your masternode status by running the following command:.
 
 ```
-./ccbc-cli masternode status
+./xavander-cli masternode status
 ```
 
 You want to see **"Masternode started successfully and Status 4"**
@@ -117,9 +117,9 @@ You want to see **"Masternode started successfully and Status 4"**
 ## Usage:
 
 ```
-./ccbc-cli getinfo
-./ccbc-cli mnsync status
-./ccbc-cli masternode status
+./xavander-cli getinfo
+./xavander-cli mnsync status
+./xavander-cli masternode status
 ```
   
 Thank you too Franco#6184 for catching some errors! :)
