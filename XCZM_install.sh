@@ -80,7 +80,7 @@ sudo ufw status
 echo Server firewall configuration completed.
 
 echo Downloading XCZM install files.
-wget https://github.com/Xavander-Coin/Xavander-Core/releases/download/v1.0.0.1/Xavander-Linux.tar.gz
+wget https://github.com/Xavander-Coin/Xavander-Core/releases/download/v1.1.0.0/Xavander-Linux.tar.gz
 echo Download complete.
 
 echo Installing XCZM.
@@ -157,7 +157,7 @@ echo "! Removing Xavander !"
 sudo rm -rf Xavander-Linux.tar.gz
 
 
-wget https://github.com/Xavander-Coin/Xavander-Core/releases/download/v1.0.0.1/Xavander-Linux.tar.gz
+wget https://github.com/Xavander-Coin/Xavander-Core/releases/download/v1.1.0.0/Xavander-Linux.tar.gz
 echo Download complete.
 echo Installing XCZM.
 tar -xvf Xavander-Linux.tar.gz
