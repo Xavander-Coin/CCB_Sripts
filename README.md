@@ -1,6 +1,6 @@
 ![logo](https://github.com/Xavander-Coin/Xavander-Core/blob/master/src/qt/res/images/xavander_logo_horizontal.png)
 
-# Xavander v1.0.0.1 Masternode Setup Guide [ Ubuntu 16.04 ]
+# Xavander v1.1.0.0 Masternode Setup Guide [ Ubuntu 16.04 ]
 
 THIS GUIDE IS FOR ROOT USERS -
 
@@ -17,7 +17,7 @@ Shell script to install a Xavander Masternode on a Linux server running Ubuntu 1
 
 
 Steps generate your own private key. 
-1.  Download and install XCZM v1.0.0.1 for Windows -   Download Link  - https://github.com/Xavander-Coin/Xavander-Core/releases
+1.  Download and install XCZM v1.1.0.0 for Windows -   Download Link  - https://github.com/Xavander-Coin/Xavander-Core/releases
 2.  Go to **Tools -> Click "Debug Console"** 
 3.  Type the following command: **masternode genkey**  
 4. You now have your generated **Private Key**  (MasternodePrivKey)
